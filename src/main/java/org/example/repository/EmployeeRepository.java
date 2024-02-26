@@ -45,12 +45,28 @@ public class EmployeeRepository implements Repository<Employee> {
     }
 
     @Override
-    public void save(Employee employee) {
+    public void save(Employee employee) throws SQLException {
+        String sql = "INSERT INTO employees (first_name, pa_surname, ma_surname, email, salary) VALUES (?,?,?,?,?)";
+        try(PreparedStatement myStmt = getConnection().prepareStatement(sql)){
+            myStmt.setString(1,employee.getFirst_name());
+            myStmt.setString(2,employee.getPa_surname());
+            myStmt.setString(3,employee.getMa_surname());
+            myStmt.setString(4,employee.getEmail());
+            myStmt.setFloat(5,employee.getSalary());
+            myStmt.executeUpdate();
+
+        }
 
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws SQLException {
+        String sql = "DELETE FROM employees WHERE id = ?";
+        try(PreparedStatement myStmt = getConnection().prepareStatement(sql)){
+            myStmt.setInt(1, id);
+            myStmt.executeUpdate();
+
+        }
 
     }
 
